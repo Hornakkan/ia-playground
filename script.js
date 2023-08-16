@@ -4,7 +4,7 @@ let answer = document.getElementById('answer');
 
 activities.addEventListener('change', () => {
   if(token.value) {
-    this.getAnswer(activities.value);
+    this.getAnswer(parseInt(activities.value));
   } else {
     answer.textContent = 'No token provided';
   }
@@ -23,36 +23,28 @@ function getAnswer(testCase) {
     case 1:
       activity = 'electromenager';
       model = 'Atlantic 151115 CE ACI VM MONO ELECT. 150L';
+      properties = 'name,manufacturer,reference,features,description,meta_title,meta_description,meta_keywords'
       break;
     case 2:
       activity = 'deux_roues';
-      model = 'SUZUKI KATANA 2019-2023';    
+      model = 'APRILIA MOTO 6.5 STARK 1995-2003';    
+      properties = 'name,manufacturer,year_begin,year_end,displacement,features,description,meta_title,meta_description,meta_keywords';
       break;
     case 3:
       activity = 'jardin';
       model = 'HUSQVARNA AUTOMOWER 305';    
+      properties = 'name,manufacturer,reference,features,description,meta_title,meta_description,meta_keywords'
       break;
     case 4:
       activity = 'imprimante';
-      model = 'Zebra ZT421T';    
+      model = 'Zebra ZT421T';
+      properties = 'name,manufacturer,reference,features,description,meta_title,meta_description,meta_keywords'    
       break;    
     case 5:
-    default:
       activity = 'agriculture';
-      model = 'Case 845XL';    
+      model = 'Case 845XL';
+      properties = 'name,manufacturer,reference,features,description,meta_title,meta_description,meta_keywords'    
       break;
-  }
-  
-  switch(activity) {
-    case 'deux_roues':
-      properties = 'name,manufacturer,year_begin,year_end,displacement,features,description,meta_title,meta_description,meta_keywords';
-      break;
-    case 'electromenager':
-    case 'jardin':
-    case 'imprimante':
-    case 'agriculture':
-    default:
-      properties = 'name,manufacturer,reference,features,description,meta_title,meta_description,meta_keywords'
   }
   
   var raw = JSON.stringify({
@@ -60,7 +52,7 @@ function getAnswer(testCase) {
     "messages": [
       {
           "role": "system",
-          "content": `Tu es un e-commerçant spécialiste de la pièce détachée dans le domaine ${activity}`
+          "content": `Tu es un spécialiste de la pièce détachée dans le domaine ${activity}`
       },
       {
         "role": "user",
