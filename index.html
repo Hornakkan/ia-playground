@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#" type="image/x-icon">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="token">
+        <label for="api-token">Your OpenAI secret token</label>
+        <input type="password" name="api-token" id="api-token">
+    </div>
+
+    <div class="activity--list">
+        <select name="activities" id="activities">
+            <option value="" selected disabled>-- choisir --</option>
+            <option value="5">Agriculture</option>
+            <option value="2">Deux Roues</option>
+            <option value="1">Electromenager</option>
+            <option value="4">Imprimante</option>
+            <option value="3">Jardin</option>
+        </select>
+    </div>
+
+    <pre clas="answer" id="answer"></pre>
+    
+    <script src="script.js"></script>
+</body>
+</html>
