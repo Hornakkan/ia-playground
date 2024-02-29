@@ -8,12 +8,15 @@
 </head>
 <body>
 
+    <label for="api-token">Your OpenAI secret token</label>
     <div class="token">
-        <label for="api-token">Your OpenAI secret token</label>
-        <input type="password" name="api-token" id="api-token" value="">
+        <input type="password" name="api-token" id="api-token" value="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">
+    </div>
+    <div style="margin-top: 10px;">
+        <input type="text" name="api-model" id="api-model" value="gpt-3.5-turbo" />
     </div>
 
-    <div class="activity--list">
+    <div class="activity--list" style="margin-top: 10px;">
         <select name="activities" id="activities">
             <option value="" selected disabled>-- choisir --</option>
             <option value="5">Agriculture</option>
@@ -24,8 +27,9 @@
         </select>
     </div>
 
-    <pre clas="answer" id="answer"></pre>
+    <pre class="answer" id="answer"></pre>
     
     <script src="script.js"></script>
+    <!-- <script src="test.js"></script> -->
 </body>
 </html>

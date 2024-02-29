@@ -1,6 +1,7 @@
 let activities = document.getElementById('activities');
 let token = document.getElementById('api-token');
 let answer = document.getElementById('answer');
+let apiModel = document.getElementById('api-model');
 
 activities.addEventListener('change', () => {
   if(token.value) {
@@ -48,7 +49,8 @@ function getAnswer(testCase) {
   }
   
   var raw = JSON.stringify({
-    "model": "gpt-3.5-turbo",
+    "model": apiModel.value,
+    "response_format": { "type": "json_object" },
     "messages": [
       {
           "role": "system",
@@ -56,7 +58,7 @@ function getAnswer(testCase) {
       },
       {
         "role": "user",
-        "content": `Génère un JSON des données techniques en français pour ${model} avec les propriétés: ${properties}`
+        "content": `Génère un JSON des données techniques en français pour "${model}" avec les propriétés: ${properties}`
       }
     ]
   });
@@ -70,27 +72,43 @@ function getAnswer(testCase) {
   
   fetch("https://api.openai.com/v1/chat/completions", requestOptions)
       .then(response => response.json())
-      // .then(result => console.log(result))
-      // .then(result => console.log(JSON.parse(result.choices[0].message.content)))
     .then(result => {
-      // data = JSON.parse(result.choices[0].message.content);
-      // console.log(result);
+      // let message = result.choices[0].message.content;
+      // if(message.includes("```")) {
+      //     // console.log('Contains ```');
+      //     msg = message.split("```");
+      //     data = JSON.parse(msg[1].substr(4));
+      // } else {
+      //     try{
+      //         // console.log('Doesn\'t contain ```');
+      //         data = JSON.parse(message);
+      //     }
+      //     catch(error) {
+      //         data = 'KO';
+      //         console.log(message);
+      //         answer.textContent = error;
+      //     }
+      // }
+      console.log(result);
+      return JSON.parse(result.choices[0].message.content);
       let message = result.choices[0].message.content;
-      if(message.includes("```")) {
-          // console.log('Contains ```');
-          msg = message.split("```");
-          data = JSON.parse(msg[1].substr(4));
-      } else {
-          try{
-              // console.log('Doesn\'t contain ```');
-              data = JSON.parse(message);
+      let finish = result.choices[0].finish_reason;
+      let usage = result.usage;
+      let sanitized = '';
+      if(message  && message.split('{').length > 1 ) {
+          sanitized = '{' + message.split('{')[1];
+          sanitized = sanitized.split('}')[0] + '}';
+          try {
+              return JSON.parse(sanitized);
           }
           catch(error) {
-              data = 'KO';
-              console.log(message);
-              answer.textContent = error;
+              console.error(error);
           }
-      }
+      } else {
+        answer.textContent = 'Le serveur de l\'IA n\'a renvoyé aucune réponse. Veuillez recommencer.';
+      }      
+    })
+    .then(data => {
       answer.textContent = JSON.stringify(data, undefined, 2);
     })
     .catch(error => {
